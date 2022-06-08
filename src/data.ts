@@ -23,7 +23,16 @@ export async function contasPrestadas(token: string): Promise<Array<ContaPrestad
 		}
 	});
 
-	return result.data.Entries.Entry;
+	
+
+	return result.data.Entries.Entry.map( (x: ContaPrestada) => {
+		return {
+			ano: x.ano,
+			mes: x.mes,
+			descricao: x.descricao,
+			total: x.total || 0,
+		};
+	});
 }
 
 export async function processosDecididosNaPrevia(token: string): Promise<Array<ContaGerencia>> {

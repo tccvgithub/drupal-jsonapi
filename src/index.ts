@@ -22,14 +22,16 @@ const Drupal = new DrupalSDK({
   }
 
   try {
-    const result = await token();
+    const accessToken = await token();
 
-    const result2 = await pdex.contasPrestadas(result.data.access_token);
+    const result2 = await pdex.contasPrestadas(accessToken);
 
-    await drupal(Drupal, 'contas_prestadas', result2);
+    await drupal(Drupal, 'indicador_1', result2);
 
-    const result3 = await pdex.consultarRecursosFiscalizados(result.data.access_token);
-    await drupal(Drupal, 'recursos_fiscalizados', result3);
+    // const result3 = await pdex.consultarRecursosFiscalizados(accessToken);
+    // await drupal(Drupal, 'indicador_4', result3);
+
+
   } catch (e) {
     console.log('ERROR', JSON.stringify(e, null, 2));
   }
