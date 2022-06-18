@@ -1,8 +1,5 @@
 import config from './config';
 import axios from 'axios';
-import axiosRetry from 'axios-retry';
-axiosRetry(axios, { retries: 3 });
-
 
 export default async function accessToken(): Promise<string> {
 	const url = `${config.remoteApiUrl}/token`;
