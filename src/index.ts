@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
 import DrupalSDK from 'drupal-sdk' ;
+
 import config from './config';
 
 import token from './access-token';
 import * as pdex from './data';
-import  drupal from './drupal_publish';
+import drupal from './drupal_publish';
 
 const Drupal = new DrupalSDK({
   url: config.drupalHost,
@@ -24,13 +25,13 @@ const Drupal = new DrupalSDK({
   try {
     const accessToken = await token();
 
-    const result2 = await pdex.contasPrestadas(accessToken);
+    const result1 = await pdex.getVolumeRecursosFiscalizados(accessToken);
+    const result2 = await pdex.consultarRecursosFiscalizados(accessToken);
+    const result3 = await pdex.processosDecididosNaPrevia(accessToken);
 
-    await drupal(Drupal, 'indicador_1', result2);
-
-    // const result3 = await pdex.consultarRecursosFiscalizados(accessToken);
-    // await drupal(Drupal, 'indicador_4', result3);
-
+    await Promise.all(await drupal(Drupal, 'indicatores_1', result1));
+    await Promise.all(await drupal(Drupal, 'indicatores_2', result2));
+    await Promise.all(await drupal(Drupal, 'indicatores_3', result3));
 
   } catch (e) {
     console.log('ERROR', JSON.stringify(e, null, 2));
