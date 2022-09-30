@@ -1,6 +1,22 @@
 import DrupalSDK from "drupal-sdk";
 import { ContaGerencia, ContaPrestada } from "./data";
 
+
+const months = [
+  'Janeiro',
+  'Fevereiro',
+  'Março',
+  'Abril',
+  'Maio',
+  'Junho',
+  'Julho',
+  'Agosto',
+  'Setembro',
+  'Outubro',
+  'Novembro',
+  'Dezembro',
+];
+
 /**
  *
  * @param Drupal
@@ -23,6 +39,7 @@ export  async function publish_conta_prestada(
         attributes: {
           field_year: x.ano,
           field_month: +x.mes,
+          field_year_month: `${x.ano}-${months[+x.mes]}`,
           field_description: x.descricao,
           field_total: x.total,
         },
