@@ -1,14 +1,14 @@
 {
-  "name": "@con-met/pdex",
+  "name": "@hpfs/pdex",
   "version": "1.0.0",
-  "description": "",
+  "description": "Questo script serve per importare ...",
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc -p .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "hpfs74",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.27.2",
@@ -18,6 +18,15 @@
     "typescript": "^4.7.3"
   },
   "bin": {
-    "pdex": "./dist/index.js"
-  }
+    "pdex": "dist/index.js"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/con-met/drupal-jsonapi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/con-met/drupal-jsonapi/issues"
+  },
+  "homepage": "https://github.com/con-met/drupal-jsonapi#readme"
 }
