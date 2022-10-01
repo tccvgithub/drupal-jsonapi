@@ -53,6 +53,7 @@ export  async function publish_conta_prestada(
           field_year: x.ano,
           field_month: +x.mes,
           field_description: x.descricao,
+          field_year_month: `${x.ano}-${months[+x.mes]}`,
           field_total: x.total,
         },
       })
