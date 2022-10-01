@@ -27,51 +27,23 @@ const Drupal = new DrupalSDK({
 
   try {
     const result1 = await pdex.getVolumeRecursosFiscalizados(accessToken);
-    await Promise.all(
-      await publish_conta_prestada(Drupal, "indicador_1", result1),
-    );
+    await publish_conta_prestada(Drupal, "indicador_1", result1);    
   } catch (e) {
     console.error("Unable to publish conta prestada");
   }
 
   try {
     const result2 = await pdex.consultarRecursosFiscalizados(accessToken);
-    await Promise.all(
-      await publish_conta_prestada(Drupal, "indicador_2", result2),
-    );
+    await publish_conta_prestada(Drupal, "indicador_2", result2);
   } catch (e) {
     console.error("Unable to publish conta gerencia");
+    console.error(e);
   }
 
   try {
     const result3 = await pdex.processosDecididosNaPrevia(accessToken);
-    await Promise.all(
-      await publish_conta_gerencia(Drupal, "indicador_3", result3),
-    );
+    await publish_conta_gerencia(Drupal, "indicador_3", result3);    
   } catch (e) {
     console.error("Unable to publish conta gerencia");
   }
 })();
-
-// const fetchData = async () => {
-
-//
-
-//   const pippo = Drupal.get('Indicadores');
-
-//   pippo.entityType = 'node'
-//   pippo.bundle = 'Indicadores'
-
-//   await pippo.create({ attributes:
-//     {
-//       title: '2020-06',
-//       field_year: 2020,
-//       field_month: 6,
-//       field_description: 'test 123',
-//       field_total: 100123,
-//   }
-// });
-
-// }
-
-// fetchData();
