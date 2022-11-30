@@ -9,6 +9,7 @@ import * as pdex from "./data";
 import {
   publish_conta_prestada,
   publish_conta_gerencia,
+  publish_volumes,
 } from "./drupal_publish";
 
 const Drupal = new DrupalSDK({
@@ -25,25 +26,27 @@ const Drupal = new DrupalSDK({
 
   const accessToken = await token();
 
-  try {
-    const result1 = await pdex.getVolumeRecursosFiscalizados(accessToken);
-    await publish_conta_prestada(Drupal, "indicador_1", result1);    
-  } catch (e) {
-    console.error("Unable to publish conta prestada");
-  }
+  // try {
+  //   const resultX = await pdex.getVolumeRecursosFiscalizados(accessToken);
+  //   console.log('DEBUG 1 ', resultX);
+  //   await publish_volumes(Drupal, "indicador_x", resultX);    
+  // } catch (e) {
+  //   console.error("Unable to publish conta prestada");
+  // }
 
   try {
     const result2 = await pdex.consultarRecursosFiscalizados(accessToken);
+    console.log('DEBUG 2 ', result2);
     await publish_conta_prestada(Drupal, "indicador_2", result2);
   } catch (e) {
     console.error("Unable to publish conta gerencia");
-    console.error(e);
+    console.log(e);
   }
 
-  try {
-    const result3 = await pdex.processosDecididosNaPrevia(accessToken);
-    await publish_conta_gerencia(Drupal, "indicador_3", result3);    
-  } catch (e) {
-    console.error("Unable to publish conta gerencia");
-  }
+  // try {
+  //   const result3 = await pdex.processosDecididosNaPrevia(accessToken);
+  //   await publish_conta_gerencia(Drupal, "indicador_3", result3);    
+  // } catch (e) {
+  //   console.error("Unable to publish conta gerencia");
+  // }
 })();

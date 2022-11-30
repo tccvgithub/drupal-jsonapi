@@ -26,13 +26,29 @@ export  async function publish_conta_prestada(
   Drupal: DrupalSDK,
   entity: string,
   data: Array<ContaPrestada>,
-): Promise<Array<Promise<any>>> {
-  return data.map(async (x) => {
-    const content = Drupal.get("node", entity);
+): Promise<void> {
+  const content = Drupal.get("node", entity);
+
+  const mapField: Record<string, string> = {
+    'Recusa': 'recusa',
+    'Visto': 'visto',
+    'Isento de Visto': 'isento_visto',
+    'Devolução': 'devolucao',
+    'Visto com Recomendação': 'visto_recomendacao',
+    'VT': 'vt',
+  };
+
+  for(const x of data) {
 
     const result = await content.read("", {
-      filter: { title: { value: `${x.ano}-${x.mes}-${x.descricao}` } },
+      filter: { title: { value: `${x.ano}-${x.mes}` } },
     });
+
+
+    const fieldKey: string = mapField[x.descricao];
+    const fieldToUpdate: any = {};
+    fieldToUpdate[fieldKey] = x.total;
+
 
     if (result.data?.length > 0) {
       return content.update(result.data[0].id, {
@@ -40,8 +56,7 @@ export  async function publish_conta_prestada(
           field_year: x.ano,
           field_month: +x.mes,
           field_year_month: `${x.ano}-${months[+x.mes]}`,
-          field_description: x.descricao,
-          field_total: x.total,
+          ...fieldToUpdate,    
         },
       });
     }
@@ -49,12 +64,11 @@ export  async function publish_conta_prestada(
     return content
       .create({
         attributes: {
-          title: `${x.ano}-${x.mes}-${x.descricao}`,
+          title: `${x.ano}-${x.mes}`,
           field_year: x.ano,
           field_month: +x.mes,
-          field_description: x.descricao,
           field_year_month: `${x.ano}-${months[+x.mes]}`,
-          field_total: x.total,
+          ...fieldToUpdate,
         },
       })
       .then(
@@ -64,8 +78,8 @@ export  async function publish_conta_prestada(
               resolve(value);
             }, 3000);
           }),
-      );
-  });
+      ); 
+  }
 }
 
 
@@ -114,3 +128,64 @@ export  async function publish_conta_prestada(
       );
   });
 }
+
+
+
+export  async function publish_volumes(
+  Drupal: DrupalSDK,
+  entity: string,
+  data: Array<ContaPrestada>,
+): Promise<void> {
+
+  for(const x of data) {
+  
+    const content = Drupal.get("node", entity);
+
+    let descriptionNorm;
+    let totalField = {};
+    
+    if (x.descricao === 'Prévia') {
+      descriptionNorm = 'previa';
+      totalField = { field_previa: x.total };
+    } else  {
+      descriptionNorm = 'sucessiva';
+      totalField = { field_sucessiva: x.total };
+    }
+
+    const result = await content.read("", {
+      filter: { title: { value: `X-${x.ano}-${x.mes}` } },
+    });
+
+    if (result.data?.length > 0) {    
+      await content.update(result.data[0].id, {
+        attributes: {
+          field_year: x.ano,
+          field_month: +x.mes,
+          field_year_month: `${x.ano}-${months[+x.mes]}`,
+          ...totalField,          
+        },
+      });
+    }    
+
+    await content
+      .create({
+        attributes: {
+          title: `X-${x.ano}-${x.mes}`,
+          field_year: x.ano,
+          field_month: +x.mes,          
+          field_year_month: `${x.ano}-${months[+x.mes]}`,
+          ...totalField,
+        },
+      })
+      .then(
+        (value) =>
+          // friction to throttle requests to drupal
+          new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(value);
+            }, 3000);
+          }),
+      );
+  }
+}
+
