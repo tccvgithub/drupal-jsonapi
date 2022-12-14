@@ -16,7 +16,7 @@ export interface ContaGerencia {
 export async function getVolumeRecursosFiscalizados(
   token: string,
 ): Promise<Array<ContaPrestada>> {
-  const url = `${config.remoteApiUrl}/t/nosi.gov/tribunaldecontas/1.0.0/recursosfiscalizados`;
+  const url = `${config.remoteApiUrl}/tribunaldecontas/1.0.0/recursosfiscalizados`;
   const result = await axios.get(url, {
     headers: {
       Accept: "application/json",
@@ -37,7 +37,7 @@ export async function getVolumeRecursosFiscalizados(
 export async function processosDecididosNaPrevia(
   token: string,
 ): Promise<Array<ContaGerencia>> {
-  const url = `${config.remoteApiUrl}/t/nosi.gov/tribunaldecontas/1.0.0/contasprestadas`;
+  const url = `${config.remoteApiUrl}/tribunaldecontas/1.0.0/contasprestadas`;
 
   const result = await axios.get(url, {
     headers: {
@@ -52,7 +52,7 @@ export async function processosDecididosNaPrevia(
 export async function consultarRecursosFiscalizados(
   token: string,
 ): Promise<Array<ContaPrestada>> {
-  const url = `${config.remoteApiUrl}/t/nosi.gov/tribunaldecontas/1.0.0/processosdecididosnaprevia`;
+  const url = `${config.remoteApiUrl}/tribunaldecontas/1.0.0/processosdecididosnaprevia`;
   const result = await axios.get(url, {
     headers: {
       Accept: "application/json",
