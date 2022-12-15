@@ -46,7 +46,7 @@ export function publishProcessosDecididosNaPrevia(
   return data.map((x: ContaPrestada) => {
     const key = `${x.ano}-${x.mes}`;
     const fieldKey: string = mapField[x.descricao];
-    const fieldToUpdate: any = {};
+    const fieldToUpdate: Record<string, number> = {};
     fieldToUpdate[fieldKey] = x.total;
 
     return upsertContent(entity, key, {
