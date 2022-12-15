@@ -1,52 +1,63 @@
 #!/usr/bin/env node
+import axios from 'axios';
+import debug from 'debug';
+import pThrottle from 'p-throttle';
 
-import DrupalSDK from "drupal-sdk";
-
-import config from "./config";
-
-import token from "./access-token";
-import * as pdex from "./data";
-import {
-  publish_conta_prestada,
-  publish_conta_gerencia,
-  publish_volumes,
-} from "./drupal_publish";
-
-const Drupal = new DrupalSDK({
-  url: config.drupalHost,
+const throttle = pThrottle({
+  limit: 2,
+  interval: 3000,
 });
 
-(async () => {
-  try {
-    await Drupal.login(config.drupalUser!, config.drupalPass!);
-  } catch (e) {
-    console.error("Unable to login to drupal");
-    throw e;
-  }
+const d = debug('pdx:main');
 
+import token from './access-token';
+
+import {login} from './drupal';
+import * as data from './data';
+
+(async () => {
+  await login();
+
+  d('Getting remote api access token');
   const accessToken = await token();
+  d(`Access token '${accessToken}'`);
 
   // try {
-  //   const resultX = await pdex.getVolumeRecursosFiscalizados(accessToken);
-  //   console.log('DEBUG 1 ', resultX);
-  //   await publish_volumes(Drupal, "indicador_x", resultX);    
-  // } catch (e) {
-  //   console.error("Unable to publish conta prestada");
+  //   const result = await data.getRecursosFiscalizados(accessToken);
+  //   const promises = data.publishRecursosFiscalizados('indicador_x', result);
+  //   await Promise.all(promises.map(throttle));
+  // } catch (e: any) {
+  //   console.error('Unable to publish conta prestada', e.message);
+  //   return;
   // }
 
   try {
-    const result2 = await pdex.consultarRecursosFiscalizados(accessToken);
-    console.log('DEBUG 2 ', result2);
-    await publish_conta_prestada(Drupal, "indicador_2", result2);
-  } catch (e) {
-    console.error("Unable to publish conta gerencia");
-    console.log(e);
+    const result = await data.getProcessosDecididosNaPrevia(accessToken);
+    console.log('DEBU', JSON.stringify(result, null, 2));
+    let index;
+    for (index = 0; index < 1; index += 1) {
+      const partialResult = result.slice(index, index + 1);
+      const promises = data.publishProcessosDecididosNaPrevia(
+        'indicador_2',
+        partialResult
+      );
+      await Promise.all(promises);
+    }
+    console.log('INDEX ', index);
+  } catch (e: any) {
+    if (axios.isAxiosError(e)) {
+      console.error('Unable to publish conta gerencia', e.response?.data);
+    } else {
+      console.error('Unable to publish conta gerencia', e.message);
+    }
+    return;
   }
 
   // try {
-  //   const result3 = await pdex.processosDecididosNaPrevia(accessToken);
-  //   await publish_conta_gerencia(Drupal, "indicador_3", result3);    
-  // } catch (e) {
-  //   console.error("Unable to publish conta gerencia");
+  //   const result = await data.getContasPrestadas(accessToken);
+  //   const promises = data.publishContasPrestadas('indicador_3', result);
+  //   await Promise.all(promises.map(throttle));
+  // } catch (e: any) {
+  //   console.error('Unable to publish conta gerencia', e.message);
   // }
 })();
