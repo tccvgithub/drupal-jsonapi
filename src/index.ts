@@ -33,15 +33,17 @@ import * as data from './data';
 
   try {
     const result = await data.getProcessosDecididosNaPrevia(accessToken);
-    console.log('DEBU', JSON.stringify(result, null, 2));
+
     let index;
-    for (index = 0; index < 1; index += 1) {
+    for (index = 0; index < result.length; index += 1) {
       const partialResult = result.slice(index, index + 1);
+      d('Publishing', partialResult.length, 'processos decididos na previa');
+
       const promises = data.publishProcessosDecididosNaPrevia(
         'indicador_2',
         partialResult
       );
-      await Promise.all(promises);
+      await Promise.allSettled(promises);
     }
     console.log('INDEX ', index);
   } catch (e: any) {

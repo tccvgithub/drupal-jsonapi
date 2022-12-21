@@ -55,6 +55,7 @@ export function publishRecursosFiscalizados(
     return upsertContent(entity, key, {
       field_year: x.ano,
       field_month: +x.mes,
+      field_month_text: months[+x.mes - 1],
       field_year_month: `${x.ano}-${months[+x.mes - 1]}`,
       ...totalField,
     });

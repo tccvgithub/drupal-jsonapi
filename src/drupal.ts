@@ -50,7 +50,8 @@ export const upsertContent = async (
         ...data,
       },
     });
-  } catch {
-    console.log('FAILED with', key, JSON.stringify(data, null, 2));
+  } catch (e: any) {
+    d('Error while upserting content', e.message);
+    throw e;
   }
 };
