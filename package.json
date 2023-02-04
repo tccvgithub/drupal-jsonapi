@@ -1,5 +1,5 @@
 {
-  "name": "@hpfs/pdex",
+  "name": "@con-met/pdex",
   "version": "1.0.0",
   "description": "Questo script serve per importare ...",
   
@@ -15,8 +15,8 @@
     "pretest": "npm run compile",
     "posttest": "npm run lint"
   },
-  "keywords": [],
-  "author": "hpfs74",
+  "keywords": ["drupal", "rest", "nodejs", "axios", "typescript"],
+  "author": "Matteo Salvestrini <matteo.salvestrini@icloud.com>",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.27.2",
