@@ -1,8 +1,7 @@
 {
   "name": "@con-met/pdex",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Questo script serve per importare ...",
-  
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "tsc -p .",
@@ -15,7 +14,13 @@
     "pretest": "npm run compile",
     "posttest": "npm run lint"
   },
-  "keywords": ["drupal", "rest", "nodejs", "axios", "typescript"],
+  "keywords": [
+    "drupal",
+    "rest",
+    "nodejs",
+    "axios",
+    "typescript"
+  ],
   "author": "Matteo Salvestrini <matteo.salvestrini@icloud.com>",
   "license": "ISC",
   "dependencies": {
