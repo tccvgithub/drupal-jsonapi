@@ -36,7 +36,8 @@ export function publishContasPrestadas(
     const key = `${x.ano_gerencia || currentYear}`;
 
     return upsertContent(entity, key, {
-      field_year: x.ano_gerencia || currentYear,
+      field_year: x.ano || currentYear,
+      field_ano_gerencia: x.ano_gerencia || currentYear,
       field_total: x.total,
     });
   });

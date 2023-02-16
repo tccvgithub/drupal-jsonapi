@@ -6,6 +6,7 @@ export interface ContaPrestada {
 }
 
 export interface ContaGerencia {
+  ano: number;
   ano_gerencia: number;
   total: number;
 }
