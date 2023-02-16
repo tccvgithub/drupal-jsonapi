@@ -45,7 +45,6 @@ import * as data from './data';
       );
       await Promise.allSettled(promises);
     }
-    console.log('INDEX ', index);
   } catch (e: any) {
     if (axios.isAxiosError(e)) {
       console.error('Unable to publish conta gerencia', e.response?.data);
@@ -57,9 +56,12 @@ import * as data from './data';
 
   try {
     const result = await data.getContasPrestadas(accessToken);
+    d('Result from API');
+    d(JSON.stringify(result, null, 2));
     const promises = data.publishContasPrestadas('indicador_3', result);
     await Promise.all(promises.map(throttle));
   } catch (e: any) {
+    d('Error' + e);
     console.error('Unable to publish conta gerencia', e.message);
   }
 })();
