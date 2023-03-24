@@ -27,7 +27,6 @@ import * as data from './data';
     await data.publishRecursosFiscalizados('indicador_x', result);
   } catch (e: any) {
     console.error('Unable to publish conta prestada', e.message);
-
   }
 
   try {
