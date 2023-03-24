@@ -11,7 +11,7 @@ const d = debug('pdx:data:recursosfiscalizados');
 
 // this value is used to scale the figures to thousands
 // otherwise too big to be displayed in the charts
-const scaleFactor = 1000;
+const scaleFactor = 1;
 
 /** retrieve data from api */
 export async function getRecursosFiscalizados(
@@ -38,26 +38,31 @@ export async function getRecursosFiscalizados(
 }
 
 /** publish api data to drupal */
-export function publishRecursosFiscalizados(
+export async function publishRecursosFiscalizados(
   entity: string,
   data: Array<ContaPrestada>
-): any {
-  return data.map((x: ContaPrestada) => {
+) {
+  for (const x of data) {
+    // return data.map((x: ContaPrestada) => {
     let totalField = {};
 
     const key = `X-${x.ano}-${x.mes}`;
     if (x.descricao === 'Prévia') {
-      totalField = {field_previa: x.total / scaleFactor};
+      totalField = {field_previa: +(x.total / scaleFactor)};
     } else {
-      totalField = {field_sucessiva: x.total / scaleFactor};
+      totalField = {field_sucessiva: +(x.total / scaleFactor)};
     }
 
-    return upsertContent(entity, key, {
-      field_year: x.ano,
-      field_month: +x.mes,
-      field_month_text: months[+x.mes - 1],
-      field_year_month: `${x.ano}-${months[+x.mes - 1]}`,
-      ...totalField,
-    });
-  });
+    try {
+      await upsertContent(entity, key, {
+        field_year: x.ano,
+        field_month: +x.mes,
+        field_month_text: months[+x.mes - 1],
+        field_year_month: `${x.ano}-${months[+x.mes - 1]}`,
+        ...totalField,
+      });
+    } catch (err) {
+      console.error('Error while updating', key, totalField, err);
+    }
+  }
 }

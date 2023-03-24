@@ -33,7 +33,8 @@ export function publishContasPrestadas(
   const currentYear = new Date().getFullYear();
 
   return data.map((x: ContaGerencia) => {
-    const key = `${x.ano_gerencia || currentYear}`;
+    // const key = `${x.ano_gerencia || currentYear}`;
+    const key = `${currentYear}-${x.ano_gerencia}`;
 
     return upsertContent(entity, key, {
       field_year: x.ano || currentYear,

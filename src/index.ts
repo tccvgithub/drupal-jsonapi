@@ -24,21 +24,18 @@ import * as data from './data';
 
   try {
     const result = await data.getRecursosFiscalizados(accessToken);
-    const promises = data.publishRecursosFiscalizados('indicador_x', result);
-    await Promise.all(promises.map(throttle));
+    await data.publishRecursosFiscalizados('indicador_x', result);
   } catch (e: any) {
     console.error('Unable to publish conta prestada', e.message);
-    return;
+
   }
 
   try {
     const result = await data.getProcessosDecididosNaPrevia(accessToken);
-
     let index;
     for (index = 0; index < result.length; index += 1) {
       const partialResult = result.slice(index, index + 1);
       d('Publishing', partialResult.length, 'processos decididos na previa');
-
       const promises = data.publishProcessosDecididosNaPrevia(
         'indicador_2',
         partialResult
@@ -51,7 +48,6 @@ import * as data from './data';
     } else {
       console.error('Unable to publish conta gerencia', e.message);
     }
-    return;
   }
 
   try {
