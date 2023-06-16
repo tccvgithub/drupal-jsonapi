@@ -51,7 +51,7 @@ c:\> npx @hpfs/pdex
 change the @hpfs to the new package name.
 
 
-# Package publishin
+# Package publishing
 The package should be published to your repository or npmjs.com
 When a change happens please do ```npm version --minor``` then do ```npm publish```.
 Follow [this guide](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages) to understand how npm packages publishing works.
