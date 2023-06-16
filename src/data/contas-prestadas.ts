@@ -30,15 +30,16 @@ export function publishContasPrestadas(
   entity: string,
   data: Array<ContaGerencia>
 ): any {
-  const currentYear = new Date().getFullYear();
-
   return data.map((x: ContaGerencia) => {
-    // const key = `${x.ano_gerencia || currentYear}`;
-    const key = `${currentYear}-${x.ano_gerencia}`;
+    if (!x.ano || !x.ano_gerencia) {
+      throw new Error('Missing required field');
+    }
+
+    const key = `${x.ano}-${x.ano_gerencia}`;
 
     return upsertContent(entity, key, {
-      field_year: x.ano || currentYear,
-      field_ano_gerencia: x.ano_gerencia || currentYear,
+      field_year: x.ano,
+      field_ano_gerencia: x.ano_gerencia,
       field_total: x.total,
     });
   });
