@@ -17,3 +17,6 @@ jobs:
         with:
           release-type: node
           package-name: release-please-action
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+  
