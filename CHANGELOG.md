@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.4](https://github.com/tccvgithub/drupal-jsonapi/compare/v1.1.3...v1.1.4) (2023-06-16)
+
+
+### Bug Fixes
+
+* fix typo ([1b4ff5a](https://github.com/tccvgithub/drupal-jsonapi/commit/1b4ff5a70b03a276319286e92037f2cfb53c17f1))
+
 ## [1.1.3](https://github.com/tccvgithub/drupal-jsonapi/compare/v1.1.2...v1.1.3) (2023-06-16)
 
 
